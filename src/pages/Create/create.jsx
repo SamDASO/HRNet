@@ -1,5 +1,5 @@
 import Header from "../../components/Header/header";
-import styles from "./home.module.scss"
+import styles from "./create.module.scss"
 
 function Create() {
 
