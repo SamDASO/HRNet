@@ -37,35 +37,46 @@ function CreateForm() {
     }
 
   return (
-      <form action="#" id="create-employee" onSubmit={handleSubmit}>
-        <label htmlFor="first-name">First Name</label>
-        <input type="text" id="first-name" value={newFirstName} onChange={(e) => setNewFirstName(e.target.value)}/>
+      <form action="#" id="create-employee" className={styles.formContainer} onSubmit={handleSubmit}>
 
-        <label htmlFor="last-name">Last Name</label>
-        <input type="text" id="last-name" value={newLastName} onChange={(e) => setNewLastName(e.target.value)}/>
+        <div className={`${styles.firstName} ${styles.subDiv}`}>
+            <label htmlFor="first-name">First Name</label>
+            <input type="text" className={styles.input} id="first-name" value={newFirstName} onChange={(e) => setNewFirstName(e.target.value)}/>
+        </div>
+
+        <div className={`${styles.lastName} ${styles.subDiv}`}>
+            <label htmlFor="last-name">Last Name</label>
+            <input type="text" className={styles.input} id="last-name" value={newLastName} onChange={(e) => setNewLastName(e.target.value)}/>
+        </div>
 
         <LocalizationProvider dateAdapter={AdapterDayjs} >
-        <DatePicker label="Date of Birth" value={newBirthday} onChange={(date) => setNewBirthday(date)}/>
+        <DatePicker sx={{ width:"100%" }} label="Date of Birth" value={newBirthday} onChange={(date) => setNewBirthday(date)}/>
         </LocalizationProvider>
 
         <LocalizationProvider dateAdapter={AdapterDayjs} >
-        <DatePicker label="Start Date" value={newStartDay} onChange={(date) => setNewStartDay(date)}/>
+        <DatePicker sx={{ width:"100%" }} label="Start Date" value={newStartDay} onChange={(date) => setNewStartDay(date)}/>
         </LocalizationProvider>
         
 
         <fieldset className={styles.address}>
             <legend>Address</legend>
 
-            <label htmlFor="street">Street</label>
-            <input id="street" type="text" />
+            <div className={`${styles.street} ${styles.subDiv}`}>
+                <label htmlFor="street">Street</label>
+                <input className={styles.input} id="street" type="text" />
+            </div>
 
-            <label htmlFor="city">City</label>
-            <input id="city" type="text" />
+            <div className={`${styles.city} ${styles.subDiv}`}>
+                <label htmlFor="city">City</label>
+                <input className={styles.input} id="city" type="text" />
+            </div>
 
             <DropDownMenu data={statesData} dataName="State" />
             
-            <label htmlFor="zip-code">Zip Code</label>
-            <input id="zip-code" type="number" />
+            <div className={`${styles.zipCode} ${styles.subDiv}`}>
+                <label htmlFor="zip-code">Zip Code</label>
+                <input className={styles.input} id="zip-code" type="number" />
+            </div>
         </fieldset>
 
         <DropDownMenu data={departmentsData} dataName="Department"/>

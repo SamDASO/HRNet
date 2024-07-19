@@ -14,7 +14,7 @@ function DropDownMenu({data, dataName}) {
   };
 
   return (
-    <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+    <FormControl variant="filled" sx={{ width:"100%" }}>
       <InputLabel id="select-label" >{dataName}</InputLabel>
       <Select
         labelId="select-label"
