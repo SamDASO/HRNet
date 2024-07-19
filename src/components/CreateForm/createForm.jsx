@@ -5,6 +5,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateUserName, updateBirthday, updateStartDay } from "../../api/api";
+import { states } from "../../data/states";
+import { departments } from "../../data/departments";
+import DropDownMenu from "../DropDownMenu/dropDownMenu";
 
 
 function CreateForm() {
@@ -15,6 +18,9 @@ function CreateForm() {
     const [newStartDay, setNewStartDay] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
     const dispatch = useDispatch();
+    
+    const statesData = states;
+    const departmentsData = departments;
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -56,21 +62,14 @@ function CreateForm() {
             <label htmlFor="city">City</label>
             <input id="city" type="text" />
 
-            <label htmlFor="state">State</label>
-            <select name="state" id="state"></select>
-
+            <DropDownMenu data={statesData} dataName="State" />
+            
             <label htmlFor="zip-code">Zip Code</label>
             <input id="zip-code" type="number" />
         </fieldset>
 
-        <label htmlFor="department">Department</label>
-        <select name="department" id="department">
-            <option>Sales</option>
-            <option>Marketing</option>
-            <option>Engineering</option>
-            <option>Human Resources</option>
-            <option>Legal</option>
-        </select>
+        <DropDownMenu data={departmentsData} dataName="Department"/>
+
         { errorMessage && <div className={styles.error}>{errorMessage}</div>}
       </form>
   );
