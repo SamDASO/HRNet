@@ -8,7 +8,7 @@ function Home() {
   return (
       <div className={styles.container}>
         <Header title="HRnet"/>
-        <Link to="/create">View Current Employees</Link>
+        <Link className={styles.link} to="/create">View Current Employees</Link>
         <h2>Create Employee</h2>
         <CreateForm />
       </div>
