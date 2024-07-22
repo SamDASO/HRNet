@@ -43,67 +43,11 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  {
-    id: 'firstName',
-    numeric: false,
-    disablePadding: false,
-    label: 'First Name',
-  },
-  {
-    id: 'lastName',
-    numeric: false,
-    disablePadding: false,
-    label: 'Last Name',
-  },
-  {
-    id: 'startDate',
-    numeric: false,
-    disablePadding: false,
-    label: 'Start Date',
-  },
-  {
-    id: 'department',
-    numeric: false,
-    disablePadding: false,
-    label: 'Departement',
-  },
-  {
-    id: 'dateOfBirth',
-    numeric: false,
-    disablePadding: false,
-    label: 'Date Of Birth',
-  },
-  {
-    id: 'street',
-    numeric: false,
-    disablePadding: false,
-    label: 'Street',
-  },
-  {
-    id: 'city',
-    numeric: false,
-    disablePadding: false,
-    label: 'City',
-  },
-  {
-    id: 'state',
-    numeric: false,
-    disablePadding: false,
-    label: 'State',
-  },
-  {
-    id: 'zipCode',
-    numeric: false,
-    disablePadding: false,
-    label: 'Zip Code',
-  },
 
-];
 
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } =
+  const { headCells, order, orderBy, onRequestSort } =
     props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -115,8 +59,6 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -139,18 +81,22 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
+  headCells: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 
-function SortingTable({employeesData}) {
+function SortingTable({tableData, headCellsData}) {
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('firstName');
+  const [orderBy, setOrderBy] = useState(headCellsData[0].id);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -176,15 +122,15 @@ function SortingTable({employeesData}) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employeesData.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData.length) : 0;
 
   const visibleRows = useMemo(
     () =>
-      stableSort(employeesData, getComparator(order, orderBy)).slice(
+      stableSort(tableData, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage, employeesData],
+    [order, orderBy, page, rowsPerPage, tableData],
   );
 
   return (
@@ -200,28 +146,26 @@ function SortingTable({employeesData}) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={employeesData.length}
+              rowCount={tableData.length}
+              headCells={headCellsData}
             />
             <TableBody>
-              {visibleRows.map((row) => {
+              {visibleRows.map((row, rowIndex) => {
 
                 return (
                     <TableRow
                     hover
-                    role="checkbox"
                     tabIndex={-1}
-                    key={row.id}
+                    key={row.id || rowIndex}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell>{row.firstName}</TableCell>
-                    <TableCell >{row.lastName}</TableCell>
-                    <TableCell >{row.startDate}</TableCell>
-                    <TableCell >{row.department}</TableCell>
-                    <TableCell >{row.dateOfBirth}</TableCell>
-                    <TableCell >{row.street}</TableCell>
-                    <TableCell >{row.city}</TableCell>
-                    <TableCell >{row.state}</TableCell>
-                    <TableCell >{row.zipCode}</TableCell>
+                  { headCellsData.map((cell) =>
+                    (
+                    <TableCell key={cell.id}>{row[cell.id]}</TableCell>
+                    )
+                  )
+                    
+                  }
                   </TableRow>
                 );
               })}
@@ -231,7 +175,7 @@ function SortingTable({employeesData}) {
                     height: (dense ? 33 : 53) * emptyRows,
                   }}
                 >
-                  <TableCell colSpan={9} />
+                  <TableCell colSpan={headCellsData.length} />
                 </TableRow>
               )}
             </TableBody>
@@ -240,7 +184,7 @@ function SortingTable({employeesData}) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={employeesData.length}
+          count={tableData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -256,20 +200,13 @@ function SortingTable({employeesData}) {
 }
 
 SortingTable.propTypes = {
-employeesData: PropTypes.arrayOf(
+  tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  headCellsData: PropTypes.arrayOf(
     PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        firstName: PropTypes.string.isRequired, 
-        lastName: PropTypes.string.isRequired, 
-        startDate: PropTypes.any.isRequired, 
-        department: PropTypes.string.isRequired, 
-        dateOfBirth: PropTypes.any.isRequired, 
-        street: PropTypes.string.isRequired, 
-        city: PropTypes.string.isRequired, 
-        state: PropTypes.string.isRequired, 
-        zipCode: PropTypes.any.isRequired
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
     })
-).isRequired,
+  ).isRequired,
 }
 
 export default SortingTable;

@@ -1,9 +1,10 @@
 import Header from "../../components/Header/header";
 import SortingTable from "../../components/SortingTable/sortingTable";
 import styles from "./create.module.scss"
+import {headCellsEmployeesData} from "../../data/headCells"
 
 //data test - needs to be replace with the real data
-const data = [
+const employeesData = [
   {
     id: 1,
     firstName: 'firstName1',
@@ -35,7 +36,7 @@ function Create() {
   return (
       <div className={styles.container}>
         <Header title="Current Employees"/>
-        <SortingTable employeesData={data}/>
+        <SortingTable headCellsData={headCellsEmployeesData} tableData={employeesData}/>
       </div>
   );
 }
