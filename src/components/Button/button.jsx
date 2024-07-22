@@ -9,7 +9,7 @@ return(
 
 Button.propTypes = {
     classStyle: PropTypes.string,
-    children: PropTypes.any.isRequired,
+    children: PropTypes.node.isRequired,
     onclickFunction: PropTypes.func
 }
 
