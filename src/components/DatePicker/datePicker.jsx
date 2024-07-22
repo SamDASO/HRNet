@@ -22,7 +22,7 @@ function DatePickerComponent({label, value, onChangeFunction}) {
 
 DatePickerComponent.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.any.isRequired,
+  value: PropTypes.any,
   onChangeFunction: PropTypes.func.isRequired,
 }
 

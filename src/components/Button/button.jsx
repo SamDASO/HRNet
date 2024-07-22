@@ -8,8 +8,8 @@ return(
 }
 
 Button.propTypes = {
-    classStyle: PropTypes.styles,
-    children: PropTypes.any.isRequired,
+    classStyle: PropTypes.string,
+    children: PropTypes.node.isRequired,
     onclickFunction: PropTypes.func
 }
 

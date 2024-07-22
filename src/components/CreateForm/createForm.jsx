@@ -49,13 +49,11 @@ function CreateForm() {
 
         <DatePickerComponent 
             label="Date of Birth" 
-            value={newBirthday} 
             onChangeFunction={(date) => setNewBirthday(date)}  
         />
 
         <DatePickerComponent 
             label="Start Date"
-            value={newStartDay}
             onChangeFunction={(date) => setNewStartDay(date)}
         />
   
