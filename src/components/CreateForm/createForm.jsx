@@ -7,31 +7,52 @@ import { departments } from "../../data/departments";
 import DropDownMenu from "../DropDownMenu/dropDownMenu";
 import Button from "../Button/button";
 import DatePickerComponent from "../DatePicker/datePicker";
+import Modal from "../Modal/modal";
 
 
 function CreateForm() {
 
     const [newFirstName, setNewFirstName] = useState('');
     const [newLastName, setNewLastName] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
     const dispatch = useDispatch();
     const [newBirthday, setNewBirthday] = useState(null);
     const [newStartDay, setNewStartDay] = useState(null);
     const statesData = states;
     const departmentsData = departments;
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        setErrorMessage("");
-        
+        setIsModalOpen(true);
+              
         try {
             updateUserName( newFirstName, newLastName, dispatch);
             updateBirthday(newBirthday, dispatch);
             updateStartDay(newStartDay, dispatch);
         }catch (error) {
             console.error('Form error:', error);
-            setErrorMessage("There's been an error in the form");
+            displayError();
          }
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
+
+    const openModal = () => {
+        setIsModalOpen(true)
+    }
+
+    const displayError = () => {
+        setIsModalOpen(true);
+
+        return (
+            <Modal>
+                <p>An error has occurred, please try again later </p>
+                <Button onclickFunction={closeModal}>Close</Button>
+            </Modal>
+        )
     }
 
   return (
@@ -82,8 +103,13 @@ function CreateForm() {
 
         <DropDownMenu data={departmentsData} dataName="Department"/>
 
-        { errorMessage && <div className={styles.error}>{errorMessage}</div>}
-        <Button classStyle={styles.btnSubmit}>Save</Button>
+        <Button classStyle={styles.btnSubmit} onclickFunction={openModal}>Save</Button>
+
+        <Modal isOpen={isModalOpen}>
+            <p>Employee Created!</p>
+            <Button onclickFunction={closeModal} classStyle={styles.btnClose}>Close</Button>
+        </Modal>
+
       </form>
   );
 }
