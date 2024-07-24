@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { visuallyHidden } from '@mui/utils';
+import { TextField } from '@mui/material';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -100,6 +101,7 @@ function SortingTable({tableData, headCellsData}) {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -116,25 +118,44 @@ function SortingTable({tableData, headCellsData}) {
     setPage(0);
   };
 
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredData = tableData.filter((row) =>
+    Object.values(row).some((value) =>
+      value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
+
+
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   const visibleRows = useMemo(
     () =>
-      stableSort(tableData, getComparator(order, orderBy)).slice(
+      stableSort(filteredData, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage, tableData],
+    [order, orderBy, page, rowsPerPage, filteredData],
   );
 
   return (
     <Box sx={{ width: '80%' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+      <TextField
+        label="Search"
+        value={searchQuery}
+        onChange={handleSearch}
+        sx={{ mb: 2 }}
+      />
+      </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableContainer>
           <Table
@@ -146,7 +167,7 @@ function SortingTable({tableData, headCellsData}) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={tableData.length}
+              rowCount={filteredData.length}
               headCells={headCellsData}
             />
             <TableBody>
@@ -184,7 +205,7 @@ function SortingTable({tableData, headCellsData}) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={tableData.length}
+          count={filteredData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

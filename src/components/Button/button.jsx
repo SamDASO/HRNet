@@ -1,9 +1,9 @@
 import styles from "./button.module.scss";
 import PropTypes from "prop-types"
 
-function Button({classStyle, children, onclickFunction}) {
+function Button({classStyle, children, ...otherProps}) {
 return(
-    <button className={`${styles.container} ${classStyle}`} onClick={onclickFunction}>{children}</button>
+    <button className={`${styles.container} ${classStyle}`} {...otherProps}>{children}</button>
 )
 }
 

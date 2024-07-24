@@ -50,7 +50,7 @@ function CreateForm() {
         return (
             <Modal>
                 <p>An error has occurred, please try again later </p>
-                <Button onclickFunction={closeModal}>Close</Button>
+                <Button onclick={closeModal}>Close</Button>
             </Modal>
         )
     }
@@ -101,11 +101,11 @@ function CreateForm() {
 
         <DropDownMenu data={departmentsData} dataName="Department"/>
 
-        <Button classStyle={styles.btnSubmit} onclickFunction={openModal}>Save</Button>
+        <Button classStyle={styles.btnSubmit} onclick={openModal}>Save</Button>
 
         <Modal isOpen={isModalOpen}>
             <p>Employee Created!</p>
-            <Button onclickFunction={closeModal} classStyle={styles.btnClose}>Close</Button>
+            <Button onclick={closeModal} classStyle={styles.btnClose}>Close</Button>
         </Modal>
 
       </form>
