@@ -1,6 +1,15 @@
-import PropTypes from "prop-types";
+
 import { useEffect } from "react";
 import styles from "./modal.module.scss";
+
+/**
+ * Modal component that renders its children inside a modal dialog. It's disable the overflow in the body when active.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isOpen - Determines if the modal is open.
+ * @param {React.ReactNode} props.children - The content to be displayed inside the modal.
+ * @returns {JSX.Element|null} The rendered modal component or null if not open.
+*/
 
 function Modal({isOpen, children}) {
 
@@ -29,9 +38,6 @@ function Modal({isOpen, children}) {
       );
 }
 
-Modal.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    children: PropTypes.node.isRequired,
-}
+
 
 export default Modal;

@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -44,12 +43,21 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+/**
+ * EnhancedTableHead component renders the table header with sortable columns.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.headCells - Array of head cells data.
+ * @param {string} props.headCells[].id - id of head cells data.
+ * @param {string} props.headCells[].label - label of head cells data.
+ * @param {string} props.order - The order of the sort (asc/desc).
+ * @param {string} props.orderBy - The column being sorted by.
+ * @param {function} props.onRequestSort - Function to handle the sort request.
+ * @returns {JSX.Element} The rendered table head.
+*/
 
+function EnhancedTableHead({headCells, order, orderBy, onRequestSort}) {
 
-
-function EnhancedTableHead(props) {
-  const { headCells, order, orderBy, onRequestSort } =
-    props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -81,19 +89,16 @@ function EnhancedTableHead(props) {
   );
 }
 
-EnhancedTableHead.propTypes = {
-  onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-  headCells: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
-
+/**
+ * SortingTable component renders the sorting table component from Material-UI.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.tableData - Array of table content.
+ * @param {Array} props.headCellsData - Array of head cells data.
+ * @param {string} props.headCellsData[].id - id of head cells data.
+ * @param {string} props.headCellsData[].label - label of head cells data.
+ * @returns {JSX.Element} The rendered sorting table.
+*/
 
 function SortingTable({tableData, headCellsData}) {
   const [order, setOrder] = useState('asc');
@@ -220,14 +225,5 @@ function SortingTable({tableData, headCellsData}) {
   );
 }
 
-SortingTable.propTypes = {
-  tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
-  headCellsData: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-}
 
 export default SortingTable;

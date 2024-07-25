@@ -32,6 +32,14 @@ const employeesData = [
   },
 
 ];
+
+/**
+ * Create page. This component renders the create employee page.
+ *
+ * @component
+ * * @returns {JSX.Element} The rendered page.
+*/
+
 function Create() {
 
   return (

@@ -3,7 +3,17 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import PropTypes from "prop-types"
+
+/**
+ * DropDownMenu component that renders a simple drop down menu component from Material-UI.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.data - The data that needs to be render inside the drop down menu.
+ * @param {string} props.data[].name - The name of the item.
+ * @param {string} [props.data[].abbreviation] - The optional abbreviation of the item.
+ * @param {string} props.dataName - The name of the drop down Menu that classify the data inside.
+ * @returns {JSX.Element} The rendered DropDownMenu component.
+*/
 
 function DropDownMenu({data, dataName}) {
   const [selectedValue, setSelectedValue] = useState('');
@@ -19,7 +29,7 @@ function DropDownMenu({data, dataName}) {
         labelId="select-label"
         id="select-small"
         value={selectedValue}
-        label="dataName"
+        label={dataName}
         onChange={handleChange}
       >
         {data.map((item, index)=> (
@@ -31,15 +41,6 @@ function DropDownMenu({data, dataName}) {
   );
 }
 
-DropDownMenu.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      abbreviation: PropTypes.string, 
-    })
-  ).isRequired,
-  dataName: PropTypes.string.isRequired,
-}
 
 export default DropDownMenu;
 

@@ -9,6 +9,16 @@ import Button from "../Button/button";
 import DatePickerComponent from "../DatePicker/datePicker";
 import Modal from "../Modal/modal";
 
+/**
+ * Form to create a new employee. This component renders the create employee form.
+ *
+ * @component
+ * @example
+ * return (
+ *   <CreateForm />
+ * )
+ * @returns {JSX.Element} The rendered form component.
+*/
 
 function CreateForm() {
 
