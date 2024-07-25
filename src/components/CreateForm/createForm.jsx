@@ -1,7 +1,6 @@
 import styles from "./createForm.module.scss"
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateUserName, updateBirthday, updateStartDay } from "../../api/api";
+import { saveToLocalStorage } from "../../api/api";
 import { states } from "../../data/states";
 import { departments } from "../../data/departments";
 import DropDownMenu from "../DropDownMenu/dropDownMenu";
@@ -22,11 +21,17 @@ import Modal from "../Modal/modal";
 
 function CreateForm() {
 
-    const [newFirstName, setNewFirstName] = useState('');
-    const [newLastName, setNewLastName] = useState('');
-    const dispatch = useDispatch();
-    const [newBirthday, setNewBirthday] = useState(null);
-    const [newStartDay, setNewStartDay] = useState(null);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [startDay, setStartDay] = useState(null);
+    const [department, setDepartement] = useState('');
+    const [birthday, setBirthday] = useState(null);
+    const [street, setStreet] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [zipCode, setZipCode] = useState('');
+
+
     const statesData = states;
     const departmentsData = departments;
 
@@ -37,9 +42,16 @@ function CreateForm() {
         setIsModalOpen(true);
               
         try {
-            updateUserName( newFirstName, newLastName, dispatch);
-            updateBirthday(newBirthday, dispatch);
-            updateStartDay(newStartDay, dispatch);
+            saveToLocalStorage("firstName", firstName)
+            saveToLocalStorage("lastName", lastName)
+            saveToLocalStorage("startDate", startDay)
+            saveToLocalStorage("department", department)
+            saveToLocalStorage("dateOfBirth", birthday)
+            saveToLocalStorage("street", street)
+            saveToLocalStorage("city", city)
+            saveToLocalStorage("state", state)
+            saveToLocalStorage("zipCode", zipCode)
+            
         }catch (error) {
             console.error('Form error:', error);
             displayError();
@@ -60,7 +72,7 @@ function CreateForm() {
         return (
             <Modal>
                 <p>An error has occurred, please try again later </p>
-                <Button onclick={closeModal}>Close</Button>
+                <Button onClick={closeModal}>Close</Button>
             </Modal>
         )
     }
@@ -70,22 +82,22 @@ function CreateForm() {
 
         <div className={styles.subDiv}>
             <label htmlFor="first-name">First Name</label>
-            <input type="text" className={styles.input} id="first-name" value={newFirstName} onChange={(e) => setNewFirstName(e.target.value)}/>
+            <input type="text" className={styles.input} id="first-name"onChange={(e) => setFirstName(e.target.value)}/>
         </div>
 
         <div className={styles.subDiv}>
             <label htmlFor="last-name">Last Name</label>
-            <input type="text" className={styles.input} id="last-name" value={newLastName} onChange={(e) => setNewLastName(e.target.value)}/>
+            <input type="text" className={styles.input} id="last-name" onChange={(e) => setLastName(e.target.value)}/>
         </div>
 
         <DatePickerComponent 
             label="Date of Birth" 
-            onChangeFunction={(date) => setNewBirthday(date)}  
+            onChangeFunction={(date) => setBirthday(date)}  
         />
 
         <DatePickerComponent 
             label="Start Date"
-            onChangeFunction={(date) => setNewStartDay(date)}
+            onChangeFunction={(date) => setStartDay(date)}
         />
   
         <fieldset className={styles.address}>
@@ -93,29 +105,29 @@ function CreateForm() {
 
             <div className={styles.subDiv}>
                 <label htmlFor="street">Street</label>
-                <input className={styles.input} id="street" type="text" />
+                <input className={styles.input} id="street" type="text" onChange={(e) => setStreet(e.target.value)}/>
             </div>
 
             <div className={styles.subDiv}>
                 <label htmlFor="city">City</label>
-                <input className={styles.input} id="city" type="text" />
+                <input className={styles.input} id="city" type="text" onChange={(e) => setCity(e.target.value)}/>
             </div>
 
-            <DropDownMenu data={statesData} dataName="State" />
+            <DropDownMenu data={statesData} dataName="State" selectedValue={state} onChangeFunction={(e) => setState(e.target.value)}/>
             
             <div className={styles.subDiv}>
                 <label htmlFor="zip-code">Zip Code</label>
-                <input className={styles.input} id="zip-code" type="number" />
+                <input className={styles.input} id="zip-code" type="number" onChange={(e) => setZipCode(e.target.value)}/>
             </div>
         </fieldset>
 
-        <DropDownMenu data={departmentsData} dataName="Department"/>
+        <DropDownMenu data={departmentsData} dataName="Department" selectedValue={department} onChangeFunction={(e) => setDepartement(e.target.value)}/>
 
-        <Button classStyle={styles.btnSubmit} onclick={openModal}>Save</Button>
+        <Button classStyle={styles.btnSubmit} onClick={openModal}>Save</Button>
 
         <Modal isOpen={isModalOpen}>
             <p>Employee Created!</p>
-            <Button onclick={closeModal} classStyle={styles.btnClose}>Close</Button>
+            <Button onClick={closeModal}>Close</Button>
         </Modal>
 
       </form>
