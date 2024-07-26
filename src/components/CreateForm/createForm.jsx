@@ -1,12 +1,12 @@
 import styles from "./createForm.module.scss"
 import { useState } from "react";
-import { saveToLocalStorage } from "../../api/api";
 import { states } from "../../data/states";
 import { departments } from "../../data/departments";
 import DropDownMenu from "../DropDownMenu/dropDownMenu";
 import Button from "../Button/button";
 import DatePickerComponent from "../DatePicker/datePicker";
 import Modal from "../Modal/modal";
+import { FetchData } from "../../api/fetchData";
 
 /**
  * Form to create a new employee. This component renders the create employee form.
@@ -34,48 +34,38 @@ function CreateForm() {
 
     const statesData = states;
     const departmentsData = departments;
+    const userId = 4;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setIsModalOpen(true);
-              
+        
         try {
-            saveToLocalStorage("firstName", firstName)
-            saveToLocalStorage("lastName", lastName)
-            saveToLocalStorage("startDate", startDay)
-            saveToLocalStorage("department", department)
-            saveToLocalStorage("dateOfBirth", birthday)
-            saveToLocalStorage("street", street)
-            saveToLocalStorage("city", city)
-            saveToLocalStorage("state", state)
-            saveToLocalStorage("zipCode", zipCode)
-            
-        }catch (error) {
+            const fetchingData = new FetchData(userId)
+            fetchingData.setUserData("firstName", firstName);
+            fetchingData.setUserData("lastName", lastName)
+            fetchingData.setUserData("startDate", startDay)
+            fetchingData.setUserData("department", department)
+            fetchingData.setUserData("dateOfBirth", birthday)
+            fetchingData.setUserData("street", street)
+            fetchingData.setUserData("city", city)
+            fetchingData.setUserData("state", state)
+            fetchingData.setUserData("zipCode", zipCode)
+            setModalMessage('Employee Created!');
+        } catch (error) {
             console.error('Form error:', error);
-            displayError();
-         }
+            setModalMessage('An error has occurred, please try again later.');
+        }finally {
+            setIsModalOpen(true);
+        }
     }
 
     const closeModal = () => {
         setIsModalOpen(false)
     }
 
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
-
-    const displayError = () => {
-        setIsModalOpen(true);
-
-        return (
-            <Modal>
-                <p>An error has occurred, please try again later </p>
-                <Button onClick={closeModal}>Close</Button>
-            </Modal>
-        )
-    }
 
   return (
       <form action="#" id="create-employee" className={styles.formContainer} onSubmit={handleSubmit}>
@@ -123,10 +113,10 @@ function CreateForm() {
 
         <DropDownMenu data={departmentsData} dataName="Department" selectedValue={department} onChangeFunction={(e) => setDepartement(e.target.value)}/>
 
-        <Button classStyle={styles.btnSubmit} onClick={openModal}>Save</Button>
+        <Button classStyle={styles.btnSubmit} type="submit">Save</Button>
 
-        <Modal isOpen={isModalOpen}>
-            <p>Employee Created!</p>
+        <Modal isOpen={isModalOpen} onClose={closeModal} style={styles.modal}>
+            <p>{modalMessage}</p>
             <Button onClick={closeModal}>Close</Button>
         </Modal>
 
