@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,6 +12,7 @@ import Paper from '@mui/material/Paper';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { visuallyHidden } from '@mui/utils';
+import { TextField } from '@mui/material';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -43,12 +43,21 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+/**
+ * EnhancedTableHead component renders the table header with sortable columns.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.headCells - Array of head cells data.
+ * @param {string} props.headCells[].id - id of head cells data.
+ * @param {string} props.headCells[].label - label of head cells data.
+ * @param {string} props.order - The order of the sort (asc/desc).
+ * @param {string} props.orderBy - The column being sorted by.
+ * @param {function} props.onRequestSort - Function to handle the sort request.
+ * @returns {JSX.Element} The rendered table head.
+*/
 
+function EnhancedTableHead({headCells, order, orderBy, onRequestSort}) {
 
-
-function EnhancedTableHead(props) {
-  const { headCells, order, orderBy, onRequestSort } =
-    props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -80,19 +89,16 @@ function EnhancedTableHead(props) {
   );
 }
 
-EnhancedTableHead.propTypes = {
-  onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-  headCells: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
-
+/**
+ * SortingTable component renders the sorting table component from Material-UI.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.tableData - Array of table content.
+ * @param {Array} props.headCellsData - Array of head cells data.
+ * @param {string} props.headCellsData[].id - id of head cells data.
+ * @param {string} props.headCellsData[].label - label of head cells data.
+ * @returns {JSX.Element} The rendered sorting table.
+*/
 
 function SortingTable({tableData, headCellsData}) {
   const [order, setOrder] = useState('asc');
@@ -100,6 +106,7 @@ function SortingTable({tableData, headCellsData}) {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -116,25 +123,44 @@ function SortingTable({tableData, headCellsData}) {
     setPage(0);
   };
 
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredData = tableData.filter((row) =>
+    Object.values(row).some((value) =>
+      value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
+
+
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
 
   const visibleRows = useMemo(
     () =>
-      stableSort(tableData, getComparator(order, orderBy)).slice(
+      stableSort(filteredData, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage, tableData],
+    [order, orderBy, page, rowsPerPage, filteredData],
   );
 
   return (
     <Box sx={{ width: '80%' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+      <TextField
+        label="Search"
+        value={searchQuery}
+        onChange={handleSearch}
+        sx={{ mb: 2 }}
+      />
+      </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableContainer>
           <Table
@@ -146,7 +172,7 @@ function SortingTable({tableData, headCellsData}) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={tableData.length}
+              rowCount={filteredData.length}
               headCells={headCellsData}
             />
             <TableBody>
@@ -184,7 +210,7 @@ function SortingTable({tableData, headCellsData}) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={tableData.length}
+          count={filteredData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -199,14 +225,5 @@ function SortingTable({tableData, headCellsData}) {
   );
 }
 
-SortingTable.propTypes = {
-  tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
-  headCellsData: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-}
 
 export default SortingTable;

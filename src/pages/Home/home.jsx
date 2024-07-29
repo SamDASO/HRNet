@@ -3,6 +3,13 @@ import Header from "../../components/Header/header";
 import styles from "./home.module.scss"
 import CreateForm from "../../components/CreateForm/createForm";
 
+/**
+ * Home page. This component renders the home page.
+ *
+ * @component
+ * * @returns {JSX.Element} The rendered page.
+*/
+
 function Home() {
 
   return (

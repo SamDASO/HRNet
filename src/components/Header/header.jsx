@@ -1,5 +1,12 @@
 import styles from "./header.module.scss"
-import PropTypes from "prop-types"
+
+/**
+ * Header component that renders the basic header of the page.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.title - The h1 element inside the header that gives a title to the page.
+ * @returns {JSX.Element} The rendered Header component.
+*/
 
 function Header({title}) {
 
@@ -10,8 +17,5 @@ function Header({title}) {
   );
 }
 
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-};
 
 export default Header;
