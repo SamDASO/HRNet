@@ -115,7 +115,7 @@ function CreateForm() {
 
         <Button classStyle={styles.btnSubmit} type="submit">Save</Button>
 
-        <Modal isOpen={isModalOpen} onClose={closeModal} style={styles.modal}>
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
             <p>{modalMessage}</p>
             <Button onClick={closeModal}>Close</Button>
         </Modal>
