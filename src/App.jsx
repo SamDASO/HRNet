@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home/home";
-import Create from "./pages/Create/create";
+import Employees from "./pages/Employees/employees"
 
 function App() {
 
@@ -11,8 +11,8 @@ function App() {
     },
 
     {
-      path: "create",
-      element: <Create/>
+      path: "employees",
+      element: <Employees/>
     }
   ]);
 

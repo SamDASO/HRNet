@@ -1,18 +1,18 @@
 import Header from "../../components/Header/header";
 import SortingTable from "../../components/SortingTable/sortingTable";
-import styles from "./create.module.scss";
+import styles from "./employees.module.scss";
 import {headCellsEmployeesData} from "../../data/headCells";
 import { Link } from "react-router-dom";
 import { employeesData } from "../../data/employees";
 
 /**
- * Create page. This component renders the create employee page.
+ * Employees page. This component renders the table with the employees.
  *
  * @component
  * * @returns {JSX.Element} The rendered page.
 */
 
-function Create() {
+function Employees() {
 
   return (
       <div className={styles.container}>
@@ -23,4 +23,4 @@ function Create() {
   );
 }
 
-export default Create;
+export default Employees;

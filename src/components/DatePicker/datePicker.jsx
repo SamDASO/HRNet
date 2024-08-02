@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 /**
  * datePickerComponent that renders the date picker component from Material-UI.
  * 
- * @param {Object} - The component props.
+ * @param {Object} props - The component props.
  * @param {string} props.label - The name of the field.
  * @param {function} props.onChangeFunction - The function that will save the value when changed by the user
  * @returns {JSX.Element} The rendered Date picker component.
