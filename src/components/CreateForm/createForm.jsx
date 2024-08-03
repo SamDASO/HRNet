@@ -5,7 +5,7 @@ import { departments } from "../../data/departments";
 import DropDownMenu from "../DropDownMenu/dropDownMenu";
 import Button from "../Button/button";
 import DatePickerComponent from "../DatePicker/datePicker";
-import Modal from "../Modal/modal";
+import {Modal} from "@samdaso/modal-component";
 import { FetchData } from "../../api/fetchData";
 
 /**
@@ -115,7 +115,7 @@ function CreateForm() {
 
         <Button classStyle={styles.btnSubmit} type="submit">Save</Button>
 
-        <Modal isOpen={isModalOpen} onClose={closeModal} style={styles.modal}>
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
             <p>{modalMessage}</p>
             <Button onClick={closeModal}>Close</Button>
         </Modal>
