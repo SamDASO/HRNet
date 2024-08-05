@@ -24,7 +24,7 @@ Create or update the `.npmrc` file in the root of your project with the followin
 //npm.pkg.github.com/:_authToken=YOUR_PERSONAL_ACCESS_TOKEN
 ```
 
-Replace **YOUR_PERSONAL_ACCESS_TOKEN** with the token you generated in the previous step.
+Replace `YOUR_PERSONAL_ACCESS_TOKEN` with the token you generated in the previous step.
 
 ### 3. Install the component
 

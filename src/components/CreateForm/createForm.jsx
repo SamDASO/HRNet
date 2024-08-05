@@ -6,7 +6,7 @@ import DropDownMenu from "../DropDownMenu/dropDownMenu";
 import Button from "../Button/button";
 import DatePickerComponent from "../DatePicker/datePicker";
 import {Modal} from "@samdaso/modal-component";
-import { FetchData } from "../../api/fetchData";
+import { UserRepository } from "../../api/userRepository";
 
 /**
  * Form to create a new employee. This component renders the create employee form.
@@ -23,7 +23,7 @@ function CreateForm() {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [startDay, setStartDay] = useState(null);
+    const [startDate, setStartDate] = useState(null);
     const [department, setDepartement] = useState('');
     const [birthday, setBirthday] = useState(null);
     const [street, setStreet] = useState('');
@@ -32,27 +32,19 @@ function CreateForm() {
     const [zipCode, setZipCode] = useState('');
 
 
+    //data needing to be adapt for API system
     const statesData = states;
     const departmentsData = departments;
-    const userId = 4;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         
         try {
-            const fetchingData = new FetchData(userId)
-            fetchingData.setUserData("firstName", firstName);
-            fetchingData.setUserData("lastName", lastName)
-            fetchingData.setUserData("startDate", startDay)
-            fetchingData.setUserData("department", department)
-            fetchingData.setUserData("dateOfBirth", birthday)
-            fetchingData.setUserData("street", street)
-            fetchingData.setUserData("city", city)
-            fetchingData.setUserData("state", state)
-            fetchingData.setUserData("zipCode", zipCode)
+            const userRepository = new UserRepository()
+            await userRepository.setUserData({firstName, lastName, startDate, department, birthday, street, city, state, zipCode})
             setModalMessage('Employee Created!');
         } catch (error) {
             console.error('Form error:', error);
@@ -87,7 +79,7 @@ function CreateForm() {
 
         <DatePickerComponent 
             label="Start Date"
-            onChangeFunction={(date) => setStartDay(date)}
+            onChangeFunction={(date) => setStartDate(date)}
         />
   
         <fieldset className={styles.address}>

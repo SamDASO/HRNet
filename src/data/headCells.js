@@ -16,7 +16,7 @@ export const headCellsEmployeesData = [
       label: 'Departement',
     },
     {
-      id: 'dateOfBirth',
+      id: 'birthday',
       label: 'Date Of Birth',
     },
     {
