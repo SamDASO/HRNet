@@ -27,6 +27,7 @@ function DropDownMenu({data, dataName, onChangeFunction, selectedValue}) {
         value={selectedValue}
         label={dataName}
         onChange={onChangeFunction}
+        required={true}
       >
         {data.map((item, index)=> (
           <MenuItem key={index} value={item.name}>{item.name}</MenuItem>

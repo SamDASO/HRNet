@@ -64,42 +64,40 @@ function CreateForm() {
 
         <div className={styles.subDiv}>
             <label htmlFor="first-name">First Name</label>
-            <input type="text" className={styles.input} id="first-name"onChange={(e) => setFirstName(e.target.value)}/>
+            <input type="text" className={styles.input} id="first-name"onChange={(e) => setFirstName(e.target.value)} required/>
         </div>
 
         <div className={styles.subDiv}>
             <label htmlFor="last-name">Last Name</label>
-            <input type="text" className={styles.input} id="last-name" onChange={(e) => setLastName(e.target.value)}/>
+            <input type="text" className={styles.input} id="last-name" onChange={(e) => setLastName(e.target.value)} required/>
         </div>
 
         <DatePickerComponent 
             label="Date of Birth" 
-            onChangeFunction={(date) => setBirthday(date)}  
-        />
+            onChangeFunction={(date) => setBirthday(date)}/>
 
         <DatePickerComponent 
             label="Start Date"
-            onChangeFunction={(date) => setStartDate(date)}
-        />
+            onChangeFunction={(date) => setStartDate(date)}/>
   
         <fieldset className={styles.address}>
             <legend>Address</legend>
 
             <div className={styles.subDiv}>
                 <label htmlFor="street">Street</label>
-                <input className={styles.input} id="street" type="text" onChange={(e) => setStreet(e.target.value)}/>
+                <input className={styles.input} id="street" type="text" onChange={(e) => setStreet(e.target.value)} required/>
             </div>
 
             <div className={styles.subDiv}>
                 <label htmlFor="city">City</label>
-                <input className={styles.input} id="city" type="text" onChange={(e) => setCity(e.target.value)}/>
+                <input className={styles.input} id="city" type="text" onChange={(e) => setCity(e.target.value)} required/>
             </div>
 
             <DropDownMenu data={statesData} dataName="State" selectedValue={state} onChangeFunction={(e) => setState(e.target.value)}/>
             
             <div className={styles.subDiv}>
                 <label htmlFor="zip-code">Zip Code</label>
-                <input className={styles.input} id="zip-code" type="number" onChange={(e) => setZipCode(e.target.value)}/>
+                <input className={styles.input} id="zip-code" type="number" onChange={(e) => setZipCode(e.target.value)} required/>
             </div>
         </fieldset>
 
