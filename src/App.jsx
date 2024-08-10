@@ -1,8 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home/home";
-import Employees from "./pages/Employees/employees"
+import { useSelector } from "react-redux";
+import Home from "./pages/home/Home";
+import Employees from "./pages/employees/Employees"
 
 function App() {
+  
+  const tableData = useSelector((state) => state.userProfile.userData);
 
   const router = createBrowserRouter([
     {
@@ -12,7 +15,7 @@ function App() {
 
     {
       path: "employees",
-      element: <Employees/>
+      element: <Employees userData={tableData}/>
     }
   ]);
 

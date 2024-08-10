@@ -1,12 +1,13 @@
-import styles from "./createForm.module.scss"
+import styles from "./CreateForm.module.scss"
 import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { setUserData } from "../../store/profile";
 import { states } from "../../data/states";
 import { departments } from "../../data/departments";
-import DropDownMenu from "../DropDownMenu/dropDownMenu";
-import Button from "../Button/button";
-import DatePickerComponent from "../DatePicker/datePicker";
-import {Modal} from "@samdaso/modal-component";
-import { UserRepository } from "../../api/userRepository";
+import DropDownMenu from "../dropDownMenu/DropDownMenu";
+import Button from "../button/Button";
+import DatePickerComponent from "../datePicker/DatePicker";
+import {Modal} from "@SamDASO/modal-component";
 
 /**
  * Form to create a new employee. This component renders the create employee form.
@@ -20,6 +21,7 @@ import { UserRepository } from "../../api/userRepository";
 */
 
 function CreateForm() {
+    const dispatch = useDispatch();
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -31,20 +33,31 @@ function CreateForm() {
     const [state, setState] = useState('');
     const [zipCode, setZipCode] = useState('');
 
-
-    //data needing to be adapt for API system
+   
     const statesData = states;
     const departmentsData = departments;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
 
+    
+ 
     const handleSubmit = async (event) => {
         event.preventDefault();
         
         try {
-            const userRepository = new UserRepository()
-            await userRepository.setUserData({firstName, lastName, startDate, department, birthday, street, city, state, zipCode})
+            const newUser = {
+                firstName,
+                lastName,
+                startDate: startDate ? startDate.toISOString().split('T')[0] : null,
+                department,
+                birthday: birthday ? birthday.toISOString().split('T')[0] : null,
+                street,
+                city,
+                state,
+                zipCode
+            };
+            dispatch(setUserData(newUser));
             setModalMessage('Employee Created!');
         } catch (error) {
             console.error('Form error:', error);

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import Header from "../../components/Header/header";
-import styles from "./home.module.scss"
-import CreateForm from "../../components/CreateForm/createForm";
+import Header from "../../components/header/Header";
+import styles from "./Home.module.scss"
+import CreateForm from "../../components/createForm/CreateForm"
 
 /**
  * Home page. This component renders the home page.
@@ -17,7 +17,7 @@ function Home() {
         <Header title="HRnet"/>
         <Link className={styles.link} to="/employees">View Current Employees</Link>
         <h2>Create Employee</h2>
-        <CreateForm />
+        <CreateForm/>
       </div>
   );
 }

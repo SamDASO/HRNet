@@ -1,4 +1,4 @@
-import styles from "./header.module.scss"
+import styles from "./Header.module.scss"
 
 /**
  * Header component that renders the basic header of the page.

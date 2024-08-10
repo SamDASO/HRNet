@@ -1,10 +1,8 @@
-import Header from "../../components/Header/header";
-import SortingTable from "../../components/SortingTable/sortingTable";
-import styles from "./employees.module.scss";
+import Header from "../../components/header/Header";
+import SortingTable from "../../components/sortingTable/sortingTable"
+import styles from "./Employees.module.scss";
 import {headCellsEmployeesData} from "../../data/headCells";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { UserRepository } from "../../api/userRepository";
 
 /**
  * Employees page. This component renders the table with the employees.
@@ -13,26 +11,12 @@ import { UserRepository } from "../../api/userRepository";
  * * @returns {JSX.Element} The rendered page.
 */
 
-function Employees() {
-  const [employeesData, setEmployeesData] = useState([]);
-
-  useEffect(() => {
-    const fetchEmployeeData = async () => {
-      try {
-      const userRepository = new UserRepository();
-      const employeesList = await userRepository.getAllUserData();
-      setEmployeesData(employeesList);
-    }catch(error){
-      console.error("Error to fetch the employees list:", error)
-    }
-    };
-    fetchEmployeeData();
-  },[])
+function Employees({userData}) {
 
   return (
       <div className={styles.container}>
         <Header title="Current Employees"/>
-        <SortingTable headCellsData={headCellsEmployeesData} tableData={employeesData}/>
+        <SortingTable headCellsData={headCellsEmployeesData} tableData={userData}/>
         <Link className={styles.link} to="/">Home</Link>
       </div>
   );
