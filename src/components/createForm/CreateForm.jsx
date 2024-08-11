@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 import { setUserData } from "../../store/profile";
 import { states } from "../../data/states";
 import { departments } from "../../data/departments";
-import DropDownMenu from "../dropDownMenu/DropDownMenu";
-import Button from "../button/Button";
-import DatePickerComponent from "../datePicker/DatePicker";
+import DropDownMenu from "../DropDownMenu/dropDownMenu";
+import Button from "../Button/button";
+import DatePickerComponent from "../datePicker/datePicker";
 import {Modal} from "@SamDASO/modal-component";
 
 /**

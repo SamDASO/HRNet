@@ -1,5 +1,5 @@
 import Header from "../../components/header/Header";
-import SortingTable from "../../components/sortingTable/sortingTable"
+import SortingTable from "../../components/sortingTable/SortingTable"
 import styles from "./Employees.module.scss";
 import {headCellsEmployeesData} from "../../data/headCells";
 import { Link } from "react-router-dom";
